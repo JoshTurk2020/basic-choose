@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape the Grammar Dungeon</title>
+</head>
+<body>
+    <h1>Escape the Grammar Dungeon</h1>
+    <div id="story"></div>
+    <div id="choices"></div>
+    <script>
+        const story = document.getElementById('story');
+        const choices = document.getElementById('choices');
+
+        let currentScene = 'start';
+
+        const scenes = {
+            start: {
+                text: 'You wake up in a dark, damp dungeon. You have no idea how you got here, but you know you must escape. You see two paths ahead of you. Which one do you choose?',
+                choices: [
+                    { text: 'Take the left path', nextScene: 'leftPath' },
+                    { text: 'Take the right path', nextScene: 'rightPath' }
+                ]
+            },
+            leftPath: {
+                text: 'You encounter a fierce dragon! The dragon asks, "Which is correct: \'I am going to the store\' or \'I am go to the store\'?"',
+                choices: [
+                    { text: '"I am going to the store"', nextScene: 'correctAnswer1' },
+                    { text: '"I am go to the store"', nextScene: 'wrongAnswer1' }
+                ]
+            },
+            rightPath: {
+                text: 'You come across a wise old owl. The owl asks, "Which is correct: \'She is taller than me\' or \'She is taller than I\'?"',
+                choices: [
+                    { text: '"She is taller than me"', nextScene: 'wrongAnswer2' },
+                    { text: '"She is taller than I"', nextScene: 'correctAnswer2' }
+                ]
+            },
+            correctAnswer1: {
+                text: 'The dragon nods approvingly and lets you pass. You continue deeper into the dungeon.',
+                choices: [
+                    { text: 'Continue', nextScene: 'finalBoss' }
+                ]
+            },
+            wrongAnswer1: {
+                text: 'The dragon roars in anger and breathes fire, incinerating you instantly. Game over!',
+                choices: [
+                    { text: 'Restart', nextScene: 'start' }
+                ]
+            },
+            correctAnswer2: {
+                text: 'The owl hoots with satisfaction and reveals a hidden passage. You follow it deeper into the dungeon.',
+                choices: [
+                    { text: 'Continue', nextScene: 'finalBoss' }
+                ]
+            },
+            wrongAnswer2: {
+                text: 'The owl screeches in disappointment and summons a swarm of bats that tear you apart. Game over!',
+                choices: [
+                    { text: 'Restart', nextScene: 'start' }
+                ]
+            },
+            finalBoss: {
+                text: 'You finally reach the dungeon exit, but a giant troll blocks your path. The troll asks, "Which is correct: \'The book is on the table\' or \'The book is in the table\'?"',
+                choices: [
+                    { text: '"The book is on the table"', nextScene: 'victory' },
+                    { text: '"The book is in the table"', nextScene: 'wrongAnswer3' }
+                ]
+            },
+            wrongAnswer3: {
+                text: 'The troll laughs at your mistake and crushes you with his massive club. Game over!',
+                choices: [
+                    { text: 'Restart', nextScene: 'start' }
+                ]
+            },
+            victory: {
+                text: 'The troll grudgingly steps aside, allowing you to escape the dungeon. Congratulations, you have won!',
+                choices: [
+                    { text: 'Play again', nextScene: 'start' }
+                ]
+            }
+        };
+
+        function displayScene(scene) {
+            story.innerHTML = scenes[scene].text;
+            choices.innerHTML = '';
+            scenes[scene].choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.innerHTML = choice.text;
+                button.addEventListener('click', () => displayScene(choice.nextScene));
+                choices.appendChild(button);
+            });
+        }
+
+        displayScene(currentScene);
+    </script>
+</body>
+</html>
